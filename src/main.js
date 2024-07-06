@@ -10,17 +10,15 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const formElements = document.querySelector('.form-input');
 
 const API_KEY = '36975970-2726c7257b1c2078714098d3d';
-
+const arr = `https://pixabay.com/api?key=${API_KEY}&q=${query}`;
 export function onGetPhotoByText(query) {
-  return fetch(`https://pixabay.com/api?key=${API_KEY}&q=${query}`).then(
-    res => {
-      console.log('res ', res);
-      if (!res.ok) {
-        throw new Error(res.status);
-      }
-      return res.json();
+  return fetch(arr).then(res => {
+    console.log('res ', res);
+    if (!res.ok) {
+      throw new Error(res.status);
     }
-  );
+    return res.json();
+  });
 }
 
 onGetPhotoByText('black+car')
