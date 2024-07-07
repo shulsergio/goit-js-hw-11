@@ -1,22 +1,25 @@
-// Описаний у документації
-import iziToast from 'izitoast';
-// Додатковий імпорт стилів
-import 'izitoast/dist/css/iziToast.min.css';
-// Описаний у документації
-import SimpleLightbox from 'simplelightbox';
-// Додатковий імпорт стилів
-import 'simplelightbox/dist/simple-lightbox.min.css';
-import { onGetPhotoByText } from './js/pixabay-api';
-
+import { onFetchError, onGetPhotoByText } from './js/pixabay-api';
+import { onCreateGalleryPhoto } from './js/render-functions';
+const LoaderText = document.querySelector('.loader');
 const InputQuery = document.querySelector('.input-query');
 const btnSbm = document.querySelector('#btn-submit');
 
 btnSbm.addEventListener('click', onCreateMarckup);
 
 function onCreateMarckup(evt) {
+  LoaderText.style.display = 'inline-block';
   evt.preventDefault();
-  console.log('InputQuery.value- ', InputQuery.value.replace(/\s+/g, '+'));
-  onGetPhotoByText('InputQuery.value')
-    .then(data => console.log(data))
-    .catch(err => console.log(console.error(err)));
+
+  let queryData = InputQuery.value.replace(/\s+/g, '+').toLowerCase();
+  console.log('InputQuery.value- ', InputQuery.value);
+  console.log('queryData- ', queryData);
+  onGetPhotoByText(queryData)
+    .then(data => {
+      LoaderText.style.display = 'none';
+      data.totalHits === 0 ? onFetchError(data) : onCreateGalleryPhoto(data);
+    })
+    .catch(onFetchError)
+    .finally(() => {
+      InputQuery.value = '';
+    });
 }
