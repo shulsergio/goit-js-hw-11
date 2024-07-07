@@ -11,8 +11,7 @@ function onCreateMarckup(evt) {
   evt.preventDefault();
 
   let queryData = InputQuery.value.replace(/\s+/g, '+').toLowerCase();
-  console.log('InputQuery.value- ', InputQuery.value);
-  console.log('queryData- ', queryData);
+
   onGetPhotoByText(queryData)
     .then(data => {
       LoaderText.style.display = 'none';
